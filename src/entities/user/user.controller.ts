@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { Response, Request, request, response } from "express";
 import {UserService} from "./user.service"
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -16,7 +16,6 @@ export class UserController{
   }
   @ApiOperation({summary:'Получение всех пользователей'})
   @ApiResponse({status:200,type:[GetUserDto]})
-  @UseGuards(JwtGuard)
   @Get('/')
   async getAllUsers(
     @Res() res: Response,){
@@ -40,6 +39,11 @@ export class UserController{
     return res.send({
       status:'ok',
     })
+  }
+
+  @Get('/:id/columns')
+  async getAllListsByUser(@Param('id') id:number){
+    return this.userService.getAllColumnsByUserId(id);
   }
 
 

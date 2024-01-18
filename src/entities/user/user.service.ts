@@ -11,6 +11,7 @@ export class UserService{
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private rolesService: RolesService
+
   ) {}
 
   availableFields = [
@@ -48,5 +49,16 @@ export class UserService{
     })
     return user
 
+  }
+
+  async getAllColumnsByUserId(id:number){
+    return await this.userRepository.find({
+      where:{id},
+      select:{
+        id:true,
+        email:true,
+      },
+      relations:{lists:true},
+    })
   }
 }

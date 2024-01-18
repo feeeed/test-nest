@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { List } from "@entities/lists/list.entity";
 import { Repository } from "typeorm";
 import {CreateListDto} from "@entities/lists/dto/create.list.dto";
+{}
 
 @Injectable()
 export class ListService {
@@ -19,5 +20,21 @@ export class ListService {
     const list = await this.listRepository.create(dto);
     return await this.listRepository.save(list);
 
+  }
+
+  async getAllColumnsByUserId(id:number){
+    return await this.listRepository.find({
+      select:{
+        id:true,
+        name:true,
+
+        },
+      relations:{users:true},
+      where:{
+        users:{
+          id
+        }
+      }
+    })
   }
 }
